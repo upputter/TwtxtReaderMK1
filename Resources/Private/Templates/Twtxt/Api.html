@@ -1,0 +1,19 @@
+<f:layout name="Api" />
+
+<f:section name="ApiContent">
+    <t:pagination 
+            data="{twtxt.entries}" 
+            as="pagination" 
+            itemsPerPage="{site.paginationItemsPerPage}" 
+            currentPage="{paginationCurrentPage}" 
+            pageLimit="{site.paginationMaxPages}" 
+        />
+        <f:for each="{pagination.items}" as="entry"> 
+            <f:render partial="Twtxt/Entry" arguments="{_all}" />        
+        </f:for>
+    <f:spaceless>
+        <f:if condition="{paginationCurrentPage} != {pagination.nextPage}">        
+            <f:render partial="Twtxt/ApiPaginationLoader" arguments="{_all}" />
+        </f:if>
+    </f:spaceless>
+    </f:section>

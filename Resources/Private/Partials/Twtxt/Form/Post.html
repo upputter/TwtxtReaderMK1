@@ -1,0 +1,106 @@
+<dialog id="modal-form">
+    <article>        
+        <header>
+            <button
+                aria-label="{L.modal.close}"
+                rel="prev"
+                data-target="modal-form"
+                onclick="toggleModal(event)"
+            ></button>
+            <h3 id="modal-form-header">#HEADER#</h3>
+        </header>
+            <form>       
+                <div id="mdToolbar"></div>
+                <textarea name="message" id="editorForm" class="rawMessage" autofocus></textarea>
+                <input 
+                    type="file" 
+                    name="file" 
+                    id="fileUpload" 
+                    style="display:none;"
+                    accept=".png, .jpg, .jpeg .gif .svg .webp"
+                    hx-encoding="multipart/form-data"
+                    hx-post="./index.php?controller=api&action=upload" 
+                    hx-trigger="change"
+                    hx-target="#uploadFilename"                    
+                >
+                <span id="uploadFilename" style="display: none;"></span>
+            <footer>
+                <button
+                    role="button"
+                    class="secondary"
+                    data-target="modal-form"
+                    onclick="toggleModal(event)">
+                    {L.modal.cancel}
+                </button>
+                <button data-target="modal-form" 
+                    hx-post="./index.php?controller=api&action=postentry"
+                    hx-swap="none"
+                    onclick="toggleModal(event)">
+                    {L.modal.confirm}
+                </button>                
+            </footer>
+        </form> 
+    </article>
+</dialog>
+
+<script src="./Resources/Public/JavaScript/emoji-picker/lc_emoji_picker.js"></script>
+
+<script>
+
+    document.addEventListener('htmx:afterRequest', function(evt) {
+        var uploadFilename = document.getElementById('uploadFilename').innerText;
+        if (uploadFilename) {
+            mdEditor.paste('![](' + uploadFilename +')');
+        }
+    });
+
+    // configure TinyMDE
+    const mdEditor = new TinyMDE.Editor({ textarea: 'editorForm' });      
+    const commandOptions = [
+        {name: 'bold', title: '<t:label label="editor.command.bold" />', innerHTML: '<i class="fa-solid fa-bold"></i>'},
+        {name: 'italic', title: '<t:label label="editor.command.italic" />', innerHTML: '<i class="fa-solid fa-italic"></i>'},
+        {name: 'strikethrough', title: '<t:label label="editor.command.strikethrough" />', innerHTML: '<i class="fa-solid fa-strikethrough"></i>'},
+        '|',
+        {name: 'blockquote', title: '<t:label label="editor.command.blockquote" />', innerHTML: '<i class="fa-solid fa-quote-right"></i>'},
+        {name: 'code', title: '<t:label label="editor.command.code" />', innerHTML: '<i class="fa-solid fa-code"></i>'},
+        '|',
+        {name: 'ol', title: '<t:label label="editor.command.ol" />', innerHTML: '<i class="fa-solid fa-list-ol"></i>'},
+        {name: 'ul', title: '<t:label label="editor.command.ul" />',innerHTML: '<i class="fa-solid fa-list-ul"></i>'},
+        '|',
+        {name: 'insertLink', title: '<t:label label="editor.command.insertLink" />', innerHTML: '<i class="fa-solid fa-link"></i>'},
+        {name: 'insertImage', title: '<t:label label="editor.command.insertImage" />', innerHTML: '<i class="fa-solid fa-image"></i>'},
+        {name: 'upload', title: '<t:label label="editor.command.uploadImage" />', innerHTML:'<i class="fa-solid fa-upload" style=""></i>', action: editor => uploadImage(editor)},
+        {name: 'emoji', title: '<t:label label="editor.command.emoji" />', innerHTML: '<i class="fa-solid fa-icons" id="emojiCMDButton"></i>', action: editor => emojiSelector()}
+    ];
+
+    const commandBar = new TinyMDE.CommandBar({
+        element: "mdToolbar",
+        editor: mdEditor,
+        commands: commandOptions
+    });
+
+    function uploadImage(editor) {
+        var uploadElement = document.getElementById('fileUpload');
+        uploadElement.click();
+    }
+
+    function emojiSelector(e) {
+        document.getElementById('emojiCMDButton').parentElement.style="background-color: var(--pico-primary-hover-background); fill: var(--pico-primary-inverse); color: var(--pico-primary-inverse);";
+        document.getElementById('emojiTrigger').click();        
+    }
+
+    new lc_emoji_picker(document.getElementById('editorForm'), {
+        picker_trigger : '',
+        trigger_position: { top : '0', right: '0', },
+        trigger_size: { height : '0px', width: '0px', },
+        target_r_padding: 0, 
+        emoji_json_url: './Resources/Public/JavaScript/emoji-picker/emoji-list.min.json',
+        labels : [ 
+            '<t:label label="editor.command.emoji" />',
+            '<t:label label="editor.command.emojiSearch" />',
+            '<t:label label="editor.command.emojiNoResults" />',
+        ],
+        selection_callback  :  function(emoji, target_field) {mdEditor.paste(emoji.innerText);},
+    });
+
+  </script>

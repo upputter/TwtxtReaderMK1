@@ -1,0 +1,33 @@
+<div id="infobox"></div>
+<f:if condition="{validUser}">
+    <f:render partial="Twtxt/Form/Post" arguments="{_all}" />
+</f:if>
+
+<dialog id="modal-rawentry">
+    <article>
+        <header>
+            <button
+                aria-label="{L.modal.close}"
+                rel="prev"
+                data-target="modal-rawentry"
+                onclick="toggleModal(event)"
+            ></button>
+            <h3 id="modal-rawentry-header">#RAWMESSAGE#</h3>
+        </header>
+        <textarea id="rawMessage" class="rawMessage" readonly></textarea>
+        <f:comment>
+        <footer>
+            <button
+                role="button"
+                class="secondary"
+                data-target="modal-rawentry-{entry.hash}"
+                onclick="toggleModal(event)"
+            >
+                Cancel</button
+            ><button autofocus data-target="modal-rawentry-{entry.hash}" onclick="toggleModal(event)">
+                Confirm
+            </button>
+        </footer>
+    </f:comment>
+    </article>
+</dialog>

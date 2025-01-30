@@ -1,0 +1,53 @@
+<script>
+    window.onload = initHash; 
+    
+    // live hash changes
+    window.addEventListener('hashchange', function(){
+        removeClassesFromElements('highlightHashTransitionEnd');
+        highlightHash();
+    });
+
+    function initHash() { // do stuff with hashes on page
+        highlightHash();
+    }
+
+    function highlightHash() { // highlight entry by hash
+        var highlightHash = document.location.hash.substr(1);
+        if (highlightHash) {
+            var entryElement = document.getElementById(highlightHash);
+            if(entryElement) {                
+                entryElement.classList.add("highlightHashTransitionStart");                    
+                setTimeout(function() {
+                    entryElement.classList.add("highlightHashTransitionEnd");
+                    entryElement.classList.remove("highlightHashTransitionStart");
+                    setTimeout(function() {entryElement.classList.remove("highlightHashTransitionEnd");}, 100);
+                }, 500);                    
+            }            
+        }
+    }
+
+    function removeClassesFromElements(className) {
+        let elements = document.getElementsByClassName(className);
+        while(elements.length > 0) {
+            elements[0].classList.remove(className);
+        }
+    }
+
+    function toggleConversation(elementId) {
+        var element = document.getElementById(elementId);
+        if (element) {
+            if (element.style.display === "none") {
+                element.style.display = "block";
+            } else {
+                element.style.display = "none";
+            }
+        }
+    }
+    
+    // append language selector L to current URL and reload
+    function switchLanguage(language) {
+        let url = new URL(location.href);
+        url.searchParams.set('L', language);       
+        window.location.href = url.href;
+    }
+</script>

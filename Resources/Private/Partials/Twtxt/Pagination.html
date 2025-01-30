@@ -1,0 +1,29 @@
+<f:if condition="{pagination.isNeeded}">  
+<f:spaceless>
+<section>
+        <nav class="pagination">
+            <ul class="paginationPages" style="margin: auto;">
+                <li role="button" class="outline"><a href="?url={currentUrl}&action={currentAction}&page={pagination.prevPage}<f:if condition="{filterHash}">&hash={filterHash}#{filterHash}</f:if>" title="{L.action.paginationPrev}">&lt;</a></li>
+                <f:for each="{pagination.pages}" as="page">
+                    <f:if condition="{pagination.currentPage} != {page}">
+                        <f:then>
+                            <f:comment>
+                            <li role="button" class="outline"><a href="?url={currentUrl}&action={currentAction}&page={page}<f:if condition="{filterHash}">&hash={filterHash}#{filterHash}</f:if>" title="<f:replace value="{L.action.paginationPage}" search="%number%" replace="{page}" />">{page}</a></li>
+                        </f:comment>
+                        </f:then>
+                        <f:else>
+                            <li role="button" class="outline secondary">
+                                {page} / <f:count>{pagination.pages}</f:count>
+                                <f:comment>
+                                    <a href="?url={currentUrl}&action={currentAction}&page={page}<f:if condition="{filterHash}">&hash={filterHash}#{filterHash}</f:if>" aria-current="page" class="secondary">{page} / <f:count>{pagination.pages}</f:count></a>
+                                </f:comment>
+                            </li>
+                        </f:else>
+                    </f:if>                    
+                </f:for>    
+                <li role="button" class="outline"><a href="?url={currentUrl}&action={currentAction}&page={pagination.nextPage}<f:if condition="{filterHash}">&hash={filterHash}#{filterHash}</f:if>" title="{L.action.paginationNext}">&gt;</a></li>
+            </ul>
+        </nav>        
+    </section>
+</f:spaceless>
+</f:if>

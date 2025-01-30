@@ -1,0 +1,69 @@
+<div class="<f:if condition="{entry.isSubentry}">subMessage</f:if>">
+    <article class="message" id="{entry.hash}">
+        <header>
+            <f:if condition="{entry.avatarUrl}">
+                <img src="<t:avatar image="{entry.avatarUrl}" />" alt="{L.entry.avatar}" title="{L.entry.avatar}" class="avatar" onerror="this.src='./Resources/Public/Icon/favicon-32x32.png';" /> 
+            </f:if>
+                <a href="?action=profile&url={entry.url}" title="{L.action.openProfile}">@{entry.nick}</a>
+                <a href="?url={entry.url}" title="{L.action.openHomeFeed}"><i class="fa fa-home"></i></a>                
+                <a href="{entry.url}" target="_blank" title="{L.action.openTwtxtFile}"><i class="fa fa-file" aria-hidden="true"></i></a>                
+                <f:if condition="{entry.type} == 'reply'}"> |
+                    <span data-tooltip="{L.info.isReply}"><i class="fa fa-reply" aria-hidden="true"> </i></span>
+                    <t:inArray haystack="{twtxt.conversationHashes}" needle="{entry.hash}">
+                        <f:then>#<a href="#{entry.replyTo}" title="<f:replace value="{L.action.jumpToHash}" search="%hash%" replace="{entry.replyTo}" />">{entry.replyTo}</a></f:then>
+                        <f:else>#<a href="?hash={entry.replyTo}#{entry.replyTo}" title="<f:replace value="{L.action.showConversationForHash}" search="%hash%" replace="{entry.replyTo}" />">{entry.replyTo}</a></f:else>
+                    </t:inArray>
+                    <a href="?url={entry.url}&hash={entry.replyTo}#{entry.hash}" title="<f:replace value="{L.action.showConversationHomeFeed}" search="%hash%" replace="{entry.replyTo}" />"><i class="fa fa-comments" aria-hidden="true"></i></a>
+                </f:if>
+                <f:if condition="{validUser}">
+                        <button            
+                        aria-label="{L.action.replyToPost}"
+                        title="{L.action.replyToPost}"
+                        rel="prev"
+                        data-target="modal-form"
+                        data-content="(#{entry.hash}) @<{entry.nick} {entry.url}> "
+                        data-content-target="editorForm"
+                        data-header-content="<f:replace value="{L.modal.replyToTitle}" replace="{'%hash%': '{entry.hash}', '%user%': '@{entry.nick}'}" />"
+                        data-header-target="modal-form-header"
+                        onclick="toggleModal(event)"
+                        ><i class="fa fa-file-pen" aria-hidden="true"></i>
+                    </button>
+                </f:if>                
+                                   
+        </header>        
+        <div>        
+            <div class="messageContent"><f:format.raw>{entry.message}</f:format.raw></div>
+            <div class="messageMeta">             
+                <span class="timeStamp" data-tooltip="<t:dateTime date="{entry.displayDateTime}" />"><i class="fa-regular fa-clock" /></i>
+                    <f:variable name="timeUnit" value="{t:label(prefix: 'L.time.', label:'{entry.timeAgo.unit}')}" />
+                    <f:replace value="{L.time.label}" replace="{
+                        '%value%': '{entry.timeAgo.value}',
+                        '%timeUnit%': '{timeUnit}'
+                    }" />
+                </span>
+            | #<a href="?hash={entry.hash}#{entry.hash}" title="{L.info.isHash}">{entry.hash}</a>
+            | <a href="javascript:void();"               
+                    aria-label="{L.action.showRawData}"
+                    title="{L.action.showRawData}"
+                    data-target="modal-rawentry"
+                    data-content="{entry.rawMessageLine}"
+                    data-content-target="rawMessage"
+                    data-header-content="<f:replace value="{L.modal.rawDataTitle}" search="%hash%" replace="{entry.hash}" />"
+                    data-header-target="modal-rawentry-header"
+                    onclick="toggleModal(event)"
+                    class="secondary"
+                    ><i class="fa fa-file-code" aria-hidden="true"></i></a>
+            </div>
+        </div>
+    </article>
+    <f:if condition="{entry.conversationEntries}">
+        <details open>
+            <summary role="button" class="outline secondary"><i class="fa fa-reply" aria-hidden="true"></i> <f:replace value="{L.feed.replies}" replace="{'%hash%': '{entry.hash}', '%user%': '@{entry.nick}'}" /></summary>
+            <div id="conversation-{entry.hash}">
+            <f:for each="{entry.conversationEntries}" as="entry">            
+                <f:render partial="Twtxt/Entry" arguments="{_all}" /> 
+            </f:for>
+        </div>
+        </details>
+    </f:if>
+</div>

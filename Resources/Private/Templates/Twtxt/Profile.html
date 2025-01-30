@@ -1,0 +1,33 @@
+<f:layout name="Default" />
+
+<f:section name="HtmlContent">
+    <f:render partial="Twtxt/Menu" arguments="{_all}" />	
+    <main class="container">        
+        <article>
+            <h1>{L.profile.title}</h1>
+            <f:if condition="{twtxt.avatar}">
+                <img src="<t:avatar image="{twtxt.avatar}" />" alt="{L.entry.avatar}" title="{L.entry.avatar}" class="profileAvatar" onerror="this.src='./Resources/Public/Icon/favicon-32x32.png';" /> 
+            </f:if>
+            <p>@{twtxt.nick} <a href="{twtxt.url}" target="_blank">{twtxt.url}</a></p>
+            <f:if condition="{twtxt.description}"><p>{twtxt.description}</p></f:if>
+            <f:if condition="{twtxt.links}">
+                <ul>
+                    <f:for each="{twtxt.links}" as="link">
+                        <li><a href="{link.target}" target="_blank">{link.label}</a>
+                    </f:for>
+                </ul>
+            </f:if>
+        </article>
+        <f:if condition="{twtxt.following}">
+        <article>
+            <h4>{L.profile.following} (<f:count>{twtxt.following}</f:count>)</h4>
+            <ul>
+            <f:for each="{twtxt.following}" as="follow">
+                <li><a href="./?action=profile&url={follow.url}" data-tooltip="{L.action.openProfile}"><i class="fa fa-user" aria-hidden="true"></i></a> <a href="./?action=own&url={follow.url}" data-tooltip="{L.action.openHomeFeed}"><i class="fa fa-home" aria-hidden="true"></i></a> | {follow.nick} <a href="{follow.url}" target="_blank">{follow.url}</a></li>
+            </f:for>
+            </ul>
+        </article>
+        </f:if>
+        <f:render partial="Twtxt/Modal" arguments="{_all}"/>
+	</main>
+</f:section>

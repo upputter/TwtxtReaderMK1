@@ -1,0 +1,34 @@
+<f:layout name="Default" />
+
+<f:section name="HtmlContent">
+	<main class="container loginForm">
+        <article>
+            <header>{L.login.title} <button            
+                aria-label="{L.login.abort}"
+                data-tooltip="{L.login.abort}"
+                rel="prev"    
+                onclick="window.location='./index.php';"
+                class="secondary"
+                ><i class="fa fa-times" aria-hidden="true"></i>
+            </button></header>
+            <div>
+                <form action="./?action=login" method="POST">
+                    <div role="group">
+                        <input type="password" name="password" placeholder="{L.login.password}" aria-label="{L.login.password}">
+                        <input type="submit" value="{L.login.button}" />
+                    </div>                
+                </form>
+            </div>            
+        </article>
+        <f:if condition="{error}">
+            <article>
+                <header>
+                    <i class="fa-solid fa-triangle-exclamation"></i> {L.login.error.title}: {error.title}
+                </header>
+                <div>
+                    <p>{L.login.error.description}</p>
+                </div>                
+            </article>
+        </f:if>
+    </main>
+</f:section>

@@ -1,0 +1,64 @@
+<article>
+    <f:if condition="{subtitle}"><h2>{subtitle}</h2></f:if>
+    <p>@{twtxt.nick} <a href="{twtxt.url}" target="_blank">{twtxt.url}</a></p>
+    <f:if condition="{twtxt.entries}">
+        <f:if condition="{filterHash} AND {twtxt.showAsConversation}">
+            <f:then>
+                <f:if condition="{twtxt.conversation}">                
+                    <p><a href="./index.php?hash={filterHash}&display=timeline" data-tooltip="{L.action.switchToTimeline}"><i class="fa-solid fa-comment-slash"></i></a>
+                        <strong>{L.feed.titleConversation}</strong>: 
+                        <f:replace 
+                            value="{L.feed.titleConversationSub}" 
+                            replace="{
+                                '%entries%': '{twtxt.conversationCounter}',
+                                '%labelEntries%' : '{L.feed.entries}'
+                            }" 
+                        /> 
+                        <f:for each="{twtxt.conversation}" as="url" key="user" iteration="iterator"><f:if condition="{iterator.isLast} AND {twtxt.conversation -> f:count()} > 1"><f:then> {L.feed.and} </f:then><f:else><f:if condition="!{iterator.isFirst}">, </f:if></f:else></f:if><a href="?url={url}&action=profile">@{user}</a></f:for>.
+                    </p>             
+                </f:if>
+            </f:then>
+            <f:else>
+                <p><f:if condition="{filterHash}"><a href="./index.php?hash={filterHash}&display=conversation" data-tooltip="{L.action.switchToConversation}"><i class="fa-solid fa-comment"></i></a></f:if>
+                    <strong>{L.feed.titleTimeline}</strong>: 
+                    <f:replace 
+                        value="{L.feed.titleTimelineSub}" 
+                        replace="{
+                            '%entries%': '{twtxt.entries ->f:count()}',
+                            '%labelEntries%' : '{L.feed.entries}'
+                        }" 
+                    />
+                </p>           
+            </f:else>
+        </f:if>
+    </f:if>
+</article>
+
+<f:render partial="Twtxt/Modal" arguments="{_all}"/>
+
+<t:pagination 
+    data="{twtxt.entries}" 
+    as="pagination" 
+    itemsPerPage="{site.paginationItemsPerPage}" 
+    currentPage="{paginationCurrentPage}" 
+    pageLimit="{site.paginationMaxPages}" 
+/> 
+
+<f:render partial="Twtxt/Pagination" arguments="{_all}" />      
+
+<f:for each="{pagination.items}" as="entry"> 
+    <f:render partial="Twtxt/Entry" arguments="{_all}" />        
+</f:for>
+
+<f:if condition="{autoPaginate}">
+    <f:then>
+        <f:comment><!-- dynamic load conten for timeline w/o hash --></f:comment>
+        <f:if condition="{paginationCurrentPage} != {pagination.nextPage}">
+            <f:render partial="Twtxt/ApiPaginationLoader" arguments="{_all}" />
+            <progress id="progressBar"></progress>
+        </f:if>       
+    </f:then>
+    <f:else>
+        <f:render partial="Twtxt/Pagination" arguments="{_all}" />
+    </f:else>  
+</f:if>

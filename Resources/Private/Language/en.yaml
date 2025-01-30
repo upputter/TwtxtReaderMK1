@@ -1,0 +1,112 @@
+---
+title: English
+---
+menu:
+  nav:
+    currentTwtxt: about @%nick%
+    following: Following
+    homeFeed: Home feed
+    info: About
+    language: Language
+    login: Login
+    logout: Logout
+    mentions: Mentions
+    news: News feed
+    posts: Posts
+    profile: Profile
+    refresh: Refresh
+    replies: Replies
+    start: Start
+    write: Write
+
+feed:
+  and: and
+  by: by
+  titleTimeline: Timeline
+  titleTimelineSub: "%entries% %labelEntries%."
+  titleConversation: Conversation
+  titleConversationSub: with %entries% %labelEntries% by
+  entries: entries
+  replies: "Replies to #%hash% from %user%"
+  title:
+    onlyMentions: Mentions
+    onlyOwnPosts: Posts from user
+    onlyPosts: Posts
+    onlyReplies: Replies to user 
+
+action:
+    actionReply: reply to this post
+    jumpToHash: "jump to hash #%hash%"
+    openConversation: open conversation for %hash%
+    openHomeFeed: open home feed
+    openProfile: open profile
+    openTwtxtFile: open twtxt file
+    paginationNext: next page
+    paginationPrev: previous page
+    paginationPage: open page %number%
+    replyToPost: reply to this post
+    showConversationForHash: "show conversation for #%hash%"
+    showConversationHomeFeed: "show conversation for #%hash% (in users home feed)"
+    ##showProfile: show Profile
+    showRawData: show raw data
+    switchToTimeline: show as timeline
+    switchToConversation: show as conversation
+
+editor:
+  command:
+    bold: Bold
+    italic: Italic
+    strikethrough: Strikethrough
+    blockquote: Quote
+    code: Code
+    ol: Numbered list
+    ul: Bulleted list
+    insertLink: Insert link
+    insertImage: Insert image
+    uploadImage: Upload and insert image
+    emoji: insert emoji
+    emojiSearch: search emoji
+    emojiNoResults: no results
+
+entry:
+    avatar: Avatar
+
+info:
+  isReply: this post is a reply
+  isHash: hash of this post
+
+login:
+  abort: abort
+  button: login
+  error: 
+    title: Error
+    description: Wrong login data!
+  password: Password
+  title: Login
+
+modal:
+  cancel: Cancel  
+  close: Close
+  confirm: Confirm
+  postTitle: Write a Post
+  rawDataTitle: "raw text data of #%hash%"
+  replyToTitle: "Reply to #%hash% from %user%"
+
+profile:
+  title: Profile
+  following: Following
+
+time:
+  label: "≈%value% %timeUnit% ago"
+  year: year
+  years: years
+  month: month
+  months: months
+  day: das
+  days: days
+  hour: hour
+  hours: hours
+  minute: minute
+  minutes: minutes
+  second: second
+  seconds: seconds

@@ -1,0 +1,19 @@
+<!DOCTYPE html>	
+	<html lang="{site.lang}">
+	<head><f:spaceless>		
+		<meta charset="utf-8">
+		<title>{site.title}</title>
+		<f:for each="{site.meta}" key="metaName" as="metaContent">
+			<f:render partial="Html/Meta" arguments="{name: metaName, content:metaContent}" />
+		</f:for>
+		<f:for each="{site.styles}" key="styleFile" as="styleMedia">
+			<f:render partial="Html/Style" arguments="{file: styleFile, media:styleMedia}" />
+		</f:for>
+		<f:for each="{site.scripts}" as="jsFile">
+			<f:render partial="Html/Script" arguments="{file: jsFile}" />
+		</f:for>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+    	<meta name="color-scheme" content="light dark">
+		<link rel="icon" type="image/x-icon" href="./Resources/Public/Icon/favicon.ico" />
+	</f:spaceless></head>
+	<body>

@@ -1,0 +1,9 @@
+{
+    "require": {
+        "josantonius/session": "^2.0",
+        "typo3fluid/fluid": "^4.0",
+        "phpfastcache/phpfastcache": "^9.2",
+        "erusev/parsedown": "^1.7",
+        "xantios/mimey": "^2.2"
+    }
+}

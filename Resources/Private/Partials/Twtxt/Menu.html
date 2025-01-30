@@ -1,0 +1,82 @@
+<div id="menuSection" class="container">
+    <f:render section="Main" arguments="{_all}" />    
+</div>
+
+<f:section name="Main">
+
+
+  
+
+
+    <nav id="navigationMeta">
+        <ul>
+            <li><a href="./" title="TwtxtReader"><h1><svg width="32" height="32"><use href="./Resources/Public/Icon/icon.svg#applicationIcon"/></svg> <span class="mobileHidden" style="display:none;">{site.title}</span></h1></a></li>
+        </ul>
+        <ul class="textNormal">
+            <li><a href="./index.php?&action=posts" title="{L.menu.nav.posts}" class="mobileButton"><i class="fa fa-paragraph" aria-hidden="true"></i> <span class="mobileReduce">{L.menu.nav.posts}</span></a></li>
+            <li><a href="./index.php?&action=mentions" title="{L.menu.nav.mentions}" class="mobileButton"><i class="fa fa-at" aria-hidden="true"></i> <span class="mobileReduce">{L.menu.nav.mentions}</span></a></li>
+            <f:if condition="{site.twtNewsUrl}">
+                <li><a href="./index.php?url={site.twtNewsUrl}" title="{L.menu.nav.news}" class="mobileButton"><i class="fa fa-rss" aria-hidden="true"></i> <span class="mobileReduce">{L.menu.nav.news}</span></a></li>
+            </f:if>            
+            <li class="textNormal">
+                <details class="dropdown" id="menuFunction">
+                    <summary title="<f:replace value="{L.menu.nav.currentTwtxt}" replace="{'%nick%': '{twtxt.nick}'}" />" role="button" class="secondary outline">
+                        <i class="fa-solid fa-address-card"></i> 
+                    </summary>
+                    <ul>                        
+                        <li><a href="./index.php?url={currentUrl}&action=profile"><i class="fa fa-user" aria-hidden="true"></i> @{twtxt.nick}</a></li>                     
+                        <li><a href="./index.php?url={currentUrl}"><i class="fa fa-home" aria-hidden="true"></i> {L.menu.nav.homeFeed}</a></li>
+                        <li><a href="./index.php?url={currentUrl}&action=own"><i class="fa fa-paragraph" aria-hidden="true"></i> {L.menu.nav.posts}</a></li>
+                        <li><a href="./index.php?url={currentUrl}&action=replies"><i class="fa fa-reply" aria-hidden="true"></i> {L.menu.nav.replies}</a></li>                        
+                        
+                    </ul>
+                </details>
+            </li>
+
+        </ul>
+        <ul style="margin-left:auto;">
+            <f:if condition="{validUser}">
+                <f:then>
+                <li>
+                    <details class="dropdown">
+                        <summary role="button" class="secondary outline" ><i class="fa-solid fa-star"></i></summary>
+                        <ul>
+                            <li><a href="javascript:void();"
+                                    aria-label="{L.action.replyToPost}"
+                                    title="{L.action.replyToPost}"
+                                    rel="prev"
+                                    data-target="modal-form"
+                                    data-content=""
+                                    data-content-target="editorForm"
+                                    data-header-content="{L.modal.postTitle}"
+                                    data-header-target="modal-form-header"
+                                    onclick="toggleModal(event)"><i class="fa fa-pen" aria-hidden="true"></i> {L.menu.nav.write}</a></li>
+                            <li><a href="./index.php?url={currentUrl}&action=update" title="{L.menu.nav.refresh}"><i class="fa fa-refresh" aria-hidden="true"></i> {L.menu.nav.refresh}</a></li>
+                            <li><a href="./index.php?doc=info" title="{L.menu.nav.refresh}"><i class="fa-solid fa-circle-info"></i> {L.menu.nav.info}</a></li>
+                            <li><a href="./index.php?action=logout" title="{L.menu.nav.logout}"><i class="fa-solid fa-right-from-bracket"></i> {L.menu.nav.logout}</a></li>
+                        </ul>
+                    </details>
+
+                </li>
+
+
+
+                    
+                </f:then>		
+                <f:else>
+                    <li><a href="./index.php?action=login" role="button" class="secondary outline" title="{L.menu.nav.login}"><i class="fa-solid fa-right-to-bracket"></i></a></li>
+                </f:else>
+            </f:if>
+            <li>		
+                <details class="dropdown">
+                    <summary role="button" class="secondary outline" ><i class="fa-solid fa-language"></i></summary>
+                    <ul dir="rtl" class="languageSelector">
+                        <f:for each="{languageSelector.available}" as="language" >
+                            <li class="textUppercase"><a href="./?L={language}" onClick="event.preventDefault(); switchLanguage('{language}')">{language}</a></li>
+                        </f:for>
+                    </ul>
+                </details>
+            </li>
+        </ul>
+    </nav>
+</f:section>

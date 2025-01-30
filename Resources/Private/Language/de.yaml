@@ -1,0 +1,112 @@
+---
+title: Deutsch
+---
+menu:
+  nav:
+    currentTwtxt: zu @%nick%
+    following: Folgt
+    homeFeed: Home-Feed
+    info: Info
+    language: Sprache
+    login: Anmelden
+    logout: Abmelden
+    mentions: Erwähnungen
+    news: Nachrichten
+    posts: Beiträge
+    profile: Profil
+    refresh: Aktualisieren
+    replies: Antworten
+    start: Start
+    write: Schreiben
+
+feed:
+  and: und
+  by: von
+  titleTimeline: Zeitachse
+  titleTimelineSub: "%entries% %labelEntries%."
+  titleConversation: Unterhaltung
+  titleConversationSub: "%entries% %labelEntries% von"
+  entries: "Beiträge"
+  replies: "Antworten zu #%hash% von %user%"
+  title:
+    onlyMentions: Erwähnungen
+    onlyOwnPosts: Beiträge des Nutzers
+    onlyPosts: Beiträge
+    onlyReplies: Antworten an Nutzer
+
+action:
+    actionReply: auf diesen Beitrag antworten
+    jumpToHash: "zum Hash #%hash% springen"
+    openConversation: Unterhaltung für %hash% öffnen
+    openHomeFeed: Home-Feed öffnen
+    openProfile: Profil öffnen
+    openTwtxtFile: Twtxt-Datei öffnen
+    paginationNext: nächste Seite
+    paginationPrev: vorherige Seite
+    paginationPage: Seite %number% öffnen
+    replyToPost: antworten
+    showConversationForHash: "Unterhaltung für #%hash% anzeigen"
+    showConversationHomeFeed: "Unterhaltung für #%hash% anzeigen (im Home-Feed des Benutzers)"
+    ##showProfile: show Profile
+    showRawData: Rohdaten anzeigen
+    switchToTimeline: Als Zeitachse anzeigen
+    switchToConversation: Als Unterhaltung anzeigen
+
+editor:
+  command:
+    bold: fett
+    italic: kursiv
+    strikethrough: gestrichen
+    blockquote: Zitat
+    code: Code
+    ol: sortierte Liste
+    ul: unsortierte Liste
+    insertLink: Link einfügen
+    insertImage: Bild einfügen
+    uploadImage: Bild hochladen und einfügen
+    emoji: Emoji einfügen
+    emojiSearch: Emoji suchen
+    emojiNoResults: kein Emoji gefunden
+
+entry:
+    avatar: Avatar
+
+info:
+  isReply: dies ist eine Antwort auf einen Beitrag
+  isHash: Hash des Beitrags
+
+login:
+  abort: abbrechen
+  button: anmelden
+  error: 
+    title: Fehler
+    description: Die Anmeldedaten sind falsch!
+  password: Passwort
+  title: Anmeldung  
+
+modal:
+  cancel: Abbrechen
+  close: Schließen
+  confirm: Veröffentlichen
+  postTitle: Beitrag schreiben
+  rawDataTitle: "Text-Rohdaten vom Beitrag #%hash%"
+  replyToTitle: "Auf #%hash% von %user% antworten"
+
+profile:
+  title: Profil
+  following: Folgt
+
+time:
+  label: "vor ≈%value% %timeUnit%"
+  year: Jahr
+  years: Jahren
+  month: Monat
+  months: Monaten
+  day: Tag
+  days: Tagen
+  hour: Stunde
+  hours: Stunden
+  minute: Minute
+  minutes: Minuten
+  second: Sekunde
+  seconds: Sekunden

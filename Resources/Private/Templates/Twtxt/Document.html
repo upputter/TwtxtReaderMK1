@@ -1,0 +1,11 @@
+<f:layout name="Default" />
+
+<f:section name="HtmlContent">
+	<f:render partial="Twtxt/Menu" arguments="{_all}" />	
+	<main class="container">
+		<article>
+			<f:format.raw>{content}</f:format.raw>        
+		</article>
+		<f:render partial="Twtxt/Modal" arguments="{_all}"/>
+	</main>	
+</f:section>
