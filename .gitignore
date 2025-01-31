@@ -6,4 +6,4 @@ media/*
 !media/.gitkeep
 vendor/
 private/config.ini
-Resources/Public/Style/pico
+Resources/Public/Style/pico/*
