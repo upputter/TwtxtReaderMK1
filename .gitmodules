@@ -1,3 +1,6 @@
 [submodule "external/pico"]
 	path = external/pico
 	url = https://github.com/picocss/pico
+[submodule "external/htmx"]
+	path = external/htmx
+	url = https://github.com/bigskysoftware/htmx
