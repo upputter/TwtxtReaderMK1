@@ -6,3 +6,5 @@ cache/images/avatars/*
 media/*
 private/config.ini
 vendor/
+
+.php-cs-fixer.cache

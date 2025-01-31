@@ -17,8 +17,8 @@ class Page
     protected $controllerName = 'Twtxt';
 
     public function __construct(
-        public string $action = 'Page', // Template 
-        public Language $language // Language object
+        public string $action = 'Page',  
+        public Language $language 
     )
     {
         // get global SiteConfigs from config.ini

@@ -28,7 +28,8 @@ class Item implements ExtendedCacheItemInterface
         return Driver::class;
     }
 
-    public function testing($var) {
+    public function testing($var)
+    {
         echo $var;
     }
 
@@ -36,7 +37,8 @@ class Item implements ExtendedCacheItemInterface
     * @return bool
     * remove experation of entries
     */
-    public function isExpired(): bool {
+    public function isExpired(): bool
+    {
         return false;
     }
 }

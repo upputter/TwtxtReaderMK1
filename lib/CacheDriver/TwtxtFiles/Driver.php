@@ -83,7 +83,6 @@ class Driver implements AggregatablePoolInterface
      */
     protected function driverWrite(ExtendedCacheItemInterface $item): bool
     {
-
         $filePath = $this->getFilePath($item->getKey());
         $data = $this->encode($this->driverPreWrap($item));
 
@@ -103,7 +102,6 @@ class Driver implements AggregatablePoolInterface
      */
     protected function driverDelete(string $key, string $encodedKey): bool
     {
-
         $filePath = $this->getFilePath($key, true);
         if (\file_exists($filePath) && @\unlink($filePath)) {
             \clearstatcache(true, $filePath);

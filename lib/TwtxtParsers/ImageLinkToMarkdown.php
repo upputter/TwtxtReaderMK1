@@ -1,8 +1,12 @@
 <?php
+
 namespace Twtxt\Parsers;
+
 // replace image-link in $string with markdown, skip markdown formated image-urls
-class ImageLinkToMarkdown {
-    static public function parse(string $rawMessage = '') {        
+class ImageLinkToMarkdown
+{
+    public static function parse(string $rawMessage = '')
+    {
         $markDownImagePattern = '/!\[(.*)\]\((.+)\)/';
         if (!preg_match($markDownImagePattern, $rawMessage, $check)) {
             $pattern = '/(?!\[\s)(?<!\])(http(s?)?:\/\/[^ ]+?(?:\.jpg|\.png|\.gif|\.jpeg))/i';

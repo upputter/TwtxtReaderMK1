@@ -2,46 +2,48 @@
 use Phpfastcache\CacheManager;
 use Phpfastcache\Config\ConfigurationOption;
 
-class TwtxtCache {
-
+class TwtxtCache
+{
     protected $CacheInstance;
     protected $CachedString;
     protected $cacheDuration = 600;
-    
     protected $objectCacheDuration = 900;
     protected $config;
 
     public function __construct(
         public bool $forceUpdate = false
-    )
-    {
+    ) {
         global $config;
         $this->config = $config->settings;
         $this->cacheDuration = ($this->config['maxCacheTime']) ?? $this->cacheDuration;
         $cacheDir = $config->settings['fastCacheDir'];
         CacheManager::setDefaultConfig(new ConfigurationOption([
-            'path' =>  __DIR__ . '/../' . $cacheDir,
+            'path' => __DIR__ . '/../' . $cacheDir,
             'itemDetailedDate' => true,
         ]));
         // $this->CacheInstance = CacheManager::getInstance('files');        
         $this->CacheInstance = CacheManager::getInstance('twtxtfiles'); // use modified file cache w/o expired items
     }
 
-    public function getStatus() {
+    public function getStatus()
+    {
         return $this->CacheInstance->getStats();
     }
 
-    protected function cleanedUpUrl($url) {
+    protected function cleanedUpUrl($url)
+    {
         return rtrim(trim($url), " \n\r/");
     }
 
-    public function clearCache($url) {
+    public function clearCache($url)
+    {
         $url = $this->cleanedUpUrl($url);
-        $urlHash = hash('sha256', $url);        
-        $this->CacheInstance->deleteItems([$urlHash]);       
+        $urlHash = hash('sha256', $url);
+        $this->CacheInstance->deleteItems([$urlHash]);
     }
 
-    protected function setCache($cacheHash, $cacheContent, $tag = false) {
+    protected function setCache($cacheHash, $cacheContent, $tag = false)
+    {
         $this->CachedString = $this->CacheInstance->getItem($cacheHash);
         $this->CachedString->set($cacheContent)->expiresAfter($this->cacheDuration);
         if ($tag) {
@@ -51,7 +53,8 @@ class TwtxtCache {
         $this->CacheInstance->commit();
     }
 
-    public function getTwtxt(string $url = '') {
+    public function getTwtxt(string $url = '')
+    {
         $url = $this->cleanedUpUrl($url);
         if (filter_var($url, FILTER_VALIDATE_URL)) {
             $urlHash = hash('sha256', $url);
@@ -60,27 +63,28 @@ class TwtxtCache {
                 if ($this->forceUpdate) { // force cache update for twtxt
                     $lastCacheDateTime = $this->CacheInstance->getItem($urlHash)->getModificationDate() ?? false;
                     if ($remoteContent = $this->getRemoteContentFromTwtxtUrl($url, $lastCacheDateTime)) {
-                        $this->setCache($urlHash, $remoteContent);                        
+                        $this->setCache($urlHash, $remoteContent);
                     }
-                }                
+                }
                 return $this->CacheInstance->getItem($urlHash)->get();
             } else {
                 if ($remoteContent = $this->getRemoteContentFromTwtxtUrl($url)) {
                     $this->setCache($urlHash, $remoteContent);
                     return $this->CacheInstance->getItem($urlHash)->get();
-                } 
+                }
             }
         } else {
             return '';
         }
     }
 
-    public function getMultiTwtxt(array $urls) {
+    public function getMultiTwtxt(array $urls)
+    {
         $returnObject = [];
         $updateUrls = [];
         foreach ($urls as $url) {
             $url = $this->cleanedUpUrl($url);
-            if (filter_var($url, FILTER_VALIDATE_URL)) {            
+            if (filter_var($url, FILTER_VALIDATE_URL)) {
                 $urlHash = hash('sha256', $url);
                 // $this->CachedString = $this->CacheInstance->getItem($urlHash);
                 if ($this->CacheInstance->hasItem($urlHash)) {
@@ -88,9 +92,9 @@ class TwtxtCache {
                 } else {
                     $updateUrls[] = $url;
                 }
-            }            
+            }
         }
-        if (count($updateUrls) > 0 ) {            
+        if (count($updateUrls) > 0) {
             $this->getMultiRemoteContentFromTwtxt($updateUrls);
             foreach ($updateUrls as $url) {
                 $urlHash = hash('sha256', $url);
@@ -103,8 +107,9 @@ class TwtxtCache {
         return $returnObject;
     }
 
-    protected function getRemoteContentFromTwtxtUrl($url, $lastUpdateDateTime = false) {
-        
+    protected function getRemoteContentFromTwtxtUrl($url, $lastUpdateDateTime = false)
+    {
+
         if (!$lastUpdateDateTime) {
             $lastUpdateDateTime = new DateTime();
             $lastUpdateDateTime->setTimestamp(0);
@@ -119,7 +124,7 @@ class TwtxtCache {
             'If-Modified-Since: ' . $headerLastUpdateDateTime->format('D, d M Y H:i:s') . ' GMT',
         ];
 
-        $curlOptArray = [            
+        $curlOptArray = [
             CURLOPT_HEADER => 0,
             CURLOPT_VERBOSE => 0,
             CURLOPT_RETURNTRANSFER => true,
@@ -141,15 +146,15 @@ class TwtxtCache {
         $response = curl_exec($ch);
 
         $contentType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
-        $modTimestamp = abs((int)curl_getinfo($ch, CURLINFO_FILETIME)); // prevent negative unixtimestamps
+        $modTimestamp = abs((int) curl_getinfo($ch, CURLINFO_FILETIME)); // prevent negative unixtimestamps
 
-        $httpStatusCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $httpStatusCode = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         curl_close($ch);
 
         if (
-            ((200 <= $httpStatusCode) AND ($httpStatusCode <= 400)) // check http status | within Successfull and Redirection
-            AND $this->isValidTwtxtContentType($contentType) // check for valid twtxt content type
+            ((200 <= $httpStatusCode) and ($httpStatusCode <= 400)) // check http status | within Successfull and Redirection
+            and $this->isValidTwtxtContentType($contentType) // check for valid twtxt content type
         ) {
             $modDateTimeDateTime = new DateTime();
             $modDateTimeDateTime->setTimezone(new DateTimeZone('GMT'));
@@ -157,18 +162,19 @@ class TwtxtCache {
 
             if ($modDateTimeDateTime > $lastUpdateDateTime) { // if the remote modified datetime is younger than the cache
                 return $response;
-            } else {                
+            } else {
                 return false;
             }
-        } else {            
+        } else {
             return false;
         }
     }
 
-    protected function getMultiRemoteContentFromTwtxt(array $urls = []) {
+    protected function getMultiRemoteContentFromTwtxt(array $urls = [])
+    {
         $multiHandle = curl_multi_init();
         $curlHandles = [];
-        $curlOptArray = [            
+        $curlOptArray = [
             CURLOPT_HEADER => 0,
             CURLOPT_VERBOSE => 0,
             CURLOPT_RETURNTRANSFER => true,
@@ -223,18 +229,18 @@ class TwtxtCache {
 
         foreach ($curlHandles as $url => $ch) {
             $content = curl_multi_getcontent($ch); // get the content
-            $urlHash = hash('sha256', $url);            
+            $urlHash = hash('sha256', $url);
             $contentType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
-            $modTimestamp = (int)curl_getinfo($ch, CURLINFO_FILETIME);
-            $httpStatusCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            $modTimestamp = (int) curl_getinfo($ch, CURLINFO_FILETIME);
+            $httpStatusCode = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
             // echo $url .': ' .  (curl_getinfo($ch, CURLINFO_TOTAL_TIME_T) / 1000000) . 's<br />';
-            
+
             if (
-                ((200 <= $httpStatusCode) AND ($httpStatusCode <= 400)) // check http status | within Successfull and Redirection
-                AND $this->isValidTwtxtContentType($contentType) // check for valid twtxt content type
-            ) { 
+                ((200 <= $httpStatusCode) and ($httpStatusCode <= 400)) // check http status | within Successfull and Redirection
+                and $this->isValidTwtxtContentType($contentType) // check for valid twtxt content type
+            ) {
                 // create DateTime object from http last-modified response
-                $modDateTimeDateTime = new DateTime(); 
+                $modDateTimeDateTime = new DateTime();
                 $modDateTimeDateTime->setTimestamp($modTimestamp);
                 $modDateTimeDateTime->setTimezone(new DateTimeZone('GMT'));
 
@@ -253,15 +259,16 @@ class TwtxtCache {
             // echo 'LOG set multi cache for ' . $url . '<br />';
             curl_multi_remove_handle($multiHandle, $ch); // remove the handle (assuming  you are done with it);
         }
-        /* End of the relevant bit */    
+        /* End of the relevant bit */
         curl_multi_close($multiHandle);
     }
 
     // $contentTypeString = 'text/plain;charset=utf-8
-    protected function isValidTwtxtContentType($contentTypeString = '') {
+    protected function isValidTwtxtContentType($contentTypeString = '')
+    {
         $contentTypeParts = array_map('trim', explode(';', strtolower($contentTypeString)));
-        if (count($contentTypeParts) == 2) {            
-            if ($contentTypeParts[0] == 'text/plain' AND $contentTypeParts[1] == 'charset=utf-8') {
+        if (count($contentTypeParts) == 2) {
+            if ($contentTypeParts[0] == 'text/plain' and $contentTypeParts[1] == 'charset=utf-8') {
                 return true;
             }
         }
@@ -269,5 +276,5 @@ class TwtxtCache {
             return true;
         }
         return false;
-    }    
+    }
 }

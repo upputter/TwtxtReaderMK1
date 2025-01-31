@@ -1,4 +1,5 @@
 <?php
+
     require_once(__DIR__ . '/../vendor/autoload.php');
 
     $excludeFromClassLoading = [
@@ -10,15 +11,16 @@
     loadPHPclasses(__DIR__ . '/TwtxtParsers');
     loadPHPclasses(__DIR__ . '/CacheDriver/TwtxtFiles');
 
-    function loadPHPclasses($directory) {
-        global $excludeFromClassLoading;        
+    function loadPHPclasses($directory)
+    {
+        global $excludeFromClassLoading;
         $d = dir($directory);
-        while (false !== ($entry = $d->read())) {           
-            $currentFile = $directory. '/' . $entry;            
+        while (false !== ($entry = $d->read())) {
+            $currentFile = $directory. '/' . $entry;
             if (
                 is_file($currentFile)
-                AND __FILE__ != $currentFile
-                AND !in_array($entry, $excludeFromClassLoading)
+                and __FILE__ != $currentFile
+                and !in_array($entry, $excludeFromClassLoading)
             ) {
                 require_once($currentFile);
             }

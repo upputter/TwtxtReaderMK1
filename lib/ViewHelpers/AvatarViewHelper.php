@@ -1,17 +1,19 @@
 <?php
+
 namespace Twtxt\ViewHelpers;
 
 use Exception;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
-class AvatarViewHelper extends AbstractViewHelper {
-    public function initializeArguments() {
-        $this->registerArgument('image', 'string', 'image url', true);        
+class AvatarViewHelper extends AbstractViewHelper
+{
+    public function initializeArguments()
+    {
+        $this->registerArgument('image', 'string', 'image url', true);
     }
-    public function render() {
+    public function render()
+    {
         global $config;
-
-        // var_dump($config);
 
         $imageUrl = $this->arguments['image'];
 
@@ -20,7 +22,7 @@ class AvatarViewHelper extends AbstractViewHelper {
             $cachedImagePath = rtrim($config->settings['imageCacheDir'], '/') . '/avatars/' . $imageUrlHash;
             if (!file_exists($cachedImagePath)) {
                 try {
-                    if($imageFile = @file_get_contents($imageUrl, false)) {
+                    if ($imageFile = @file_get_contents($imageUrl, false)) {
                         file_put_contents($cachedImagePath, $imageFile);
                     } else {
                         return $imageUrl;
@@ -30,8 +32,6 @@ class AvatarViewHelper extends AbstractViewHelper {
                 }
             }
             return $cachedImagePath;
-            
-
         } else {
             return $imageUrl;
         }

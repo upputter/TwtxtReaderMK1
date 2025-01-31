@@ -1,8 +1,9 @@
 <?php
 // general functions
 
-function login() {
-    global $page, $session;    
+function login()
+{
+    global $page, $session;
 
     $errorMessage = [];
     if (isset($_POST['password'])) {
@@ -18,24 +19,27 @@ function login() {
             $page->render('Login');
             exit();
         }
-        header ('Location: index.php');
+        header('Location: index.php');
     }
 
     $page->render('Login');
 }
 
-function checkPassword($plainTextPassword) {
+function checkPassword($plainTextPassword)
+{
     global $config;
     return password_verify($plainTextPassword, $config->login['password']);
 }
 
-function generatePasswordHash($plainTextPassword) {
+function generatePasswordHash($plainTextPassword)
+{
     return password_hash($plainTextPassword, PASSWORD_BCRYPT);
 }
 
-function uploadMedia() : string | bool {
+function uploadMedia(): string|bool
+{
     global $config, $validUser;
-    
+
     $allowedUploadMimeTypes = [
         'image/gif',
         'image/jpeg',
@@ -44,7 +48,7 @@ function uploadMedia() : string | bool {
         'image/webp',
     ];
 
-    if ($validUser AND isset($_FILES['file'])) {
+    if ($validUser and isset($_FILES['file'])) {
         $mimes = new \Mimey\MimeTypes;
         $uploadFileName = basename($_FILES['file']['name']);
         $uploadFileMimeType = $_FILES['file']['type'];
@@ -53,14 +57,15 @@ function uploadMedia() : string | bool {
             $storeFileName = strtoupper(substr(Base32::encode('media' . date('dmYHis') . $uploadFileName), -16)) . '.' . $mimes->getExtension($uploadFileMimeType);
             $storeFileFullPathAndFileName = $mediaStoreFolder . $storeFileName;
             move_uploaded_file($_FILES['file']['tmp_name'], $storeFileFullPathAndFileName);
-            $publicUrl = rtrim($config->settings['publicMediaFolderUrl'], '/') . '/'. $storeFileName;
+            $publicUrl = rtrim($config->settings['publicMediaFolderUrl'], '/') . '/' . $storeFileName;
             return $publicUrl;
-        }        
+        }
     }
     return false;
 }
 
-function postEntry($message) {
+function postEntry($message)
+{
     global $config, $validUser;
 
     if ($validUser) {
@@ -82,7 +87,8 @@ function postEntry($message) {
     return false;
 }
 
-function showStaticDocument($document) {
+function showStaticDocument($document)
+{
     global $config, $language, $validUser, $selectedLanguage;
     if ($document) {
         $documentFullFilenameAndPath = './Resources/Private/Static/' . $document . '.md';
@@ -91,7 +97,7 @@ function showStaticDocument($document) {
             $pd = new Twtxt\TwtxtParsedown;
             $pd->setSafeMode(false);
             $pd->setBreaksEnabled(true);
-            $pd->setMarkupEscaped(false);            
+            $pd->setMarkupEscaped(false);
             $renderedDocumentContent = $pd->text($documentContent);
             $page = new FluidPage\Page(action: 'Document', language: $language);
             $page->assign('languageSelector', ['current' => $selectedLanguage, 'available' => $language->getAvailableLanguages()]);

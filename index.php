@@ -1,7 +1,8 @@
 <?php
-	// ini_set('display_errors', '1');
-	// ini_set('display_startup_errors', '1');
-	// error_reporting(E_ALL);
+
+// ini_set('display_errors', '1');
+// ini_set('display_startup_errors', '1');
+// error_reporting(E_ALL);
 
 
 require_once(__DIR__ . '/lib/init.class.php');
@@ -23,7 +24,9 @@ $config->site['scripts'] = [
 
 // all kinds of settings
 $url = (isset($_GET['url'])) ? $_GET['url'] : $config->settings['twturl'];
-if (strlen($url) == 0) {$url = $config->settings['twturl'];}
+if (strlen($url) == 0) {
+    $url = $config->settings['twturl'];
+}
 $filterHash = ($_GET['hash']) ?? null;
 $followerLevel = 0;
 $currentAction = (isset($_GET['action'])) ? strtolower($_GET['action']) : 'start';
@@ -36,7 +39,9 @@ $displayType = ($_GET['display']) ?? null;
 $autoPaginate = false; // use htmx based pagination (or not)
 
 $filterAction = 'none';
-if ($filterHash) $filterAction = 'hash';
+if ($filterHash) {
+    $filterAction = 'hash';
+}
 $subtitle = '';
 
 // static information pages
@@ -60,7 +65,7 @@ if (!$session->isStarted()) {
         'cookie_httponly' => true,
         'cookie_lifetime' => 0,
         'cookie_samesite' => 'Strict',
-        'cookie_secure'   => true,
+        'cookie_secure' => true,
     ]);
 }
 
@@ -84,22 +89,22 @@ switch ($currentAction) {
     // view actions
     case 'start':
         $autoPaginate = true;
-        break;    
+        break;
 
-    case 'posts':                 
+    case 'posts':
         $subtitle = $language->get('L.feed.title.onlyPosts');
         $entryTypeFilter = ['post'];
         $autoPaginate = true;
         break;
-    
+
     case 'own':
         $followerLevel = 1;
         $subtitle = $language->get('L.feed.title.onlyOwnPosts');
         $autoPaginate = true;
-        break; 
+        break;
 
     case 'replies':
-        $followerLevel = 1;           
+        $followerLevel = 1;
         $filterAction = 'replies';
         $subtitle = $language->get('L.feed.title.onlyReplies');
         $autoPaginate = true;
@@ -112,7 +117,7 @@ switch ($currentAction) {
         break;
 
     case 'profile':
-        $fluidAction = 'Profile';           
+        $fluidAction = 'Profile';
         $followerLevel = 1;
         break;
     case 'static':
@@ -124,14 +129,14 @@ switch ($currentAction) {
         $session->destroy();
         header('Location: index.php');
         exit();
-        break;
+
     case 'login':
         $fluidAction = 'Login';
         break;
-    
+
     case 'update':
         if (!$validUser) {
-            header ('Location: index.php?action=login');
+            header('Location: index.php?action=login');
             exit();
         }
         $twtxtUpdate = true;
@@ -139,7 +144,7 @@ switch ($currentAction) {
         $currentAction = 'start';
         $autoPaginate = true;
         break;
-    
+
 }
 
 // here we try not to render to much
@@ -153,18 +158,17 @@ if ($controller) {
                 if ($publicMediaUrl = uploadMedia()) {
                     echo $publicMediaUrl;
                 }
-            }            
+            }
             exit();
-            break;
 
         case 'postentry':
-            if(postEntry($_REQUEST['message'])) {
+            if (postEntry($_REQUEST['message'])) {
                 // after a successful post, update the own twtxt timeline
                 $followerLevel = 1;
                 $twtxtUpdate = true;
                 $twtxtUpdate = new Twtxt(
-                    url: $config->settings['twturl'], 
-                    followerLevel: $followerLevel, 
+                    url: $config->settings['twturl'],
+                    followerLevel: $followerLevel,
                     updateCachedFiles: $twtxtUpdate,
                     limitMaxEntries: 0,
                 );
@@ -172,29 +176,30 @@ if ($controller) {
             } else {
                 http_response_code(403);
                 die('Forbidden');
-            }            
-            exit;
-            break;
+            }
+            exit();
     }
 }
 
 // move on wtith page building
 
-$page = new FluidPage\Page(action: $fluidAction, language: $language);
+$page = new FluidPage\Page(
+    action: $fluidAction,
+    language: $language
+);
 
 
 switch (strtolower($fluidAction)) {
     case 'login':
         login();
         exit();
-        break;
 }
 
 // do all the Twtxt stuff
 
 $twtxt = new Twtxt(
-    url: $url, 
-    followerLevel: $followerLevel, 
+    url: $url,
+    followerLevel: $followerLevel,
     updateCachedFiles: $twtxtUpdate,
     limitMaxEntries: $limitMaxEntries,
     unlimitedTimeline: $unlimitedTimeline,
@@ -203,19 +208,20 @@ $twtxt = new Twtxt(
 
 $twtxt->getTwtxt();
 
-// ToDo: may redirect the action 
+// ToDo: may redirect the action
 if ($currentAction == 'update') {
-    
 }
 
 // set filters for feeds
 switch (strtolower($filterAction)) {
     case 'api':
         $twtxt->filerEntriesByHash($filterHash);
-        $limitMaxEntries = false; // get all hashes outside of page limit 
+        $limitMaxEntries = false; // get all hashes outside of page limit
         break;
     case 'hash':
-        if ($displayType != 'timeline') $twtxt->showAsConversation = true;
+        if ($displayType != 'timeline') {
+            $twtxt->showAsConversation = true;
+        }
         $twtxt->filerEntriesByHash($filterHash);
         $limitMaxEntries = false; // get all hashes outside of page limit
         break;
