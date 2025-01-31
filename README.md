@@ -32,10 +32,18 @@ Sie werden in den jeweiligen Ordnern unter `external/` eingebunden.
 
 Die folgende Befehlskette klont dieses Repository in das aktuelle Verzeichnis `.`, legt die Submodule an und blendet unnötige Inhalte der Submodule aus. Anschließend werden per `composer` die verwendeten PHP-Bibliotheken geladen.
 
+*Tipp:* Die folgenden Befehle an geeigneter Stelle kopieren und einfügen!
+
 ```shell
 git clone https://github.com/upputter/TwtxtReader.git .
+```
+```shell
 git submodule update --init
+```
+```shell
 git -C external/pico sparse-checkout set /css | git -C external/htmx sparse-checkout set /dist
+```
+```shell
 composer install --ignore-platform-reqs
 ```
 
