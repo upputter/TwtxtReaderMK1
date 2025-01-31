@@ -4,9 +4,5 @@ cache/fastCache/*
 !cache/fastCache/.htaccess
 cache/images/avatars/*
 media/*
-!media/.gitkeep
-vendor/
 private/config.ini
-Resources/Public/Style/pico/*
-
-
+vendor/
