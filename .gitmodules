@@ -4,3 +4,6 @@
 [submodule "external/htmx"]
 	path = external/htmx
 	url = https://github.com/bigskysoftware/htmx
+[submodule "external/fontawesome"]
+	path = external/fontawesome
+	url = https://github.com/FortAwesome/Font-Awesome
