@@ -9,16 +9,15 @@ require_once(__DIR__ . '/lib/init.class.php');
 use Josantonius\Session\Session;
 
 $config->site['styles'] = [
-    'Resources/Public/Style/fontawsome/css/all.css' => 'all',
-    'Resources/Public/Style/pico/pico.orange.css' => 'all',
+    'external/fontawesome/css/all.css' => 'all',
+    'external/pico/css/pico.orange.css' => 'all',
     'Resources/Public/Style/twtxt.css' => 'all',
     'Resources/Public/Style/tiny-mde.min.css' => 'all',
-
 ];
 
 $config->site['scripts'] = [
     'Resources/Public/JavaScript/pico/modal.js',
-    'Resources/Public/JavaScript/htmx/htmx.min.js',
+    'external/htmx/dist/htmx.min.js',
     'Resources/Public/JavaScript/TinyMDE/tiny-mde.min.js',
 ];
 
