@@ -1,6 +1,7 @@
 <?php
 
-class Twtxt {
+class Twtxt
+{
     public $config = [];
     public $entries = [];
     public $following = [];
@@ -52,8 +53,9 @@ class Twtxt {
             $lines = explode("\n", $data);
             foreach ($lines as $currentLine) {
                 $lineCounter++;
-                if (empty(trim($currentLine)))
+                if (empty(trim($currentLine))) {
                     continue;
+                }
 
                 // TWTXT Header
                 if (str_starts_with($currentLine, '#')) {
@@ -90,7 +92,7 @@ class Twtxt {
                     }
                 } else {
                     try {
-                        // TWTXT Messages                        
+                        // TWTXT Messages
                         if ($items = mb_split("\t", $currentLine)) {
                             if (count($items) < 2) {
                                 $items = mb_split(" ", $currentLine, 2);
@@ -100,7 +102,7 @@ class Twtxt {
                             @list($timestring, $message) = $items;
                             if ($message and $timestring) {
                                 $dateTime = new DateTime($timestring, new DateTimeZone('UTC'));
-                                // $dateTimeString = $dateTime->format('Y-m-d\TH:i:sP');                               
+                                // $dateTimeString = $dateTime->format('Y-m-d\TH:i:sP');
                                 if (($dateTime >= $this->timelineLimitDateTime) or $this->unlimitedTimeline) {
                                     $newEntry = new TwtxtEntry(
                                         dateTime: $dateTime,
@@ -121,7 +123,6 @@ class Twtxt {
                             }
                         }
                     } catch (Exception $e) {
-
                     }
                 }
             }
@@ -151,8 +152,9 @@ class Twtxt {
     public function getTwtxt($url = '')
     {
         $url = (!empty($url)) ? trim($url) : $this->url;
-        if (str_contains($url, 'gemini://'))
+        if (str_contains($url, 'gemini://')) {
             return false;
+        }
         if ($twtxtData = $this->cache->getTwtxt($url)) {
             $this->parseTwtxtData($url, $twtxtData);
         }
@@ -165,7 +167,6 @@ class Twtxt {
             $followerData = $this->cache->getMultiTwtxt($followingUrls);
 
             foreach ($followerData as $url => $follower) {
-
                 $currentFollower = new Twtxt(
                     url: $url,
                     followerLevel: $this->followerLevel,
@@ -211,7 +212,7 @@ class Twtxt {
 
     public function filerEntriesByHash($hash)
     {
-        // iterate through all entries and find hash dependencies        
+        // iterate through all entries and find hash dependencies
         $hashStorage = $this->getCorrespondingHashesFromEntries([$hash]); // initialize hashstorage array with current hash
         // sort conversation (nicks and urls)
         ksort($this->conversation);
@@ -235,8 +236,9 @@ class Twtxt {
         });
 
         // stack sorted entries together
-        if ($this->showAsConversation)
+        if ($this->showAsConversation) {
             $this->buildConversation();
+        }
     }
 
     public function buildConversation()
@@ -251,7 +253,7 @@ class Twtxt {
                     $this->entries[$entry->replyTo]->setConversationEntries($hash, $entry);
                     $conversationArray[] = $hash;
                 } else {
-                    // ToDo: Error logging
+                    // TODO: Error logging
                     // echo 'Can not find hash #' . $entry->replyTo . ' in conversation. <br />';
                 }
             }
@@ -268,12 +270,12 @@ class Twtxt {
     public function getCorrespondingHashesFromEntries(
         $hashStorage = []
     ): array {
-        $maxLevel = (int) (($this->config['conversationLevel']) ?? 5); // we are going this "deep" in a conversation      
+        $maxLevel = (int) (($this->config['conversationLevel']) ?? 5); // we are going this "deep" in a conversation
         for ($i = 0; $i <= $maxLevel; $i++) { // iterate $maxLevels through all entries
             foreach ($this->entries as $entry) {
-                if (isset($entry->replyTo)) { // it all depends on $entry->replyTo 
+                if (isset($entry->replyTo)) { // it all depends on $entry->replyTo
                     if (in_array($entry->hash, $hashStorage)) {
-                        $hashStorage[] = $entry->replyTo; // save replyTo hash of entry in hashStorage                        
+                        $hashStorage[] = $entry->replyTo; // save replyTo hash of entry in hashStorage
                     }
                     if (in_array($entry->replyTo, $hashStorage)) {
                         $hashStorage[] = $entry->hash; // save hash of entry replied to a hash in hashstorage
@@ -315,8 +317,9 @@ class Twtxt {
             $this->entries = $entryStorage;
         }
         if ($limitEntries and count($this->entries) > 0) {
-            if ($this->limitMaxEntries)
+            if ($this->limitMaxEntries) {
                 $this->entries = array_slice($this->entries, 0, $this->config['maxEntries']);
+            }
         }
     }
 }

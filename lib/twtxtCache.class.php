@@ -1,4 +1,5 @@
 <?php
+
 use Phpfastcache\CacheManager;
 use Phpfastcache\Config\ConfigurationOption;
 
@@ -21,7 +22,7 @@ class TwtxtCache
             'path' => __DIR__ . '/../' . $cacheDir,
             'itemDetailedDate' => true,
         ]));
-        // $this->CacheInstance = CacheManager::getInstance('files');        
+        // $this->CacheInstance = CacheManager::getInstance('files');
         $this->CacheInstance = CacheManager::getInstance('twtxtfiles'); // use modified file cache w/o expired items
     }
 
@@ -109,7 +110,6 @@ class TwtxtCache
 
     protected function getRemoteContentFromTwtxtUrl($url, $lastUpdateDateTime = false)
     {
-
         if (!$lastUpdateDateTime) {
             $lastUpdateDateTime = new DateTime();
             $lastUpdateDateTime->setTimestamp(0);
@@ -128,14 +128,14 @@ class TwtxtCache
             CURLOPT_HEADER => 0,
             CURLOPT_VERBOSE => 0,
             CURLOPT_RETURNTRANSFER => true,
-            // CURLOPT_USERAGENT => 'TwtxtReader/0.0.1 (+https://uplegger.eu/twtxt.txt; @arne)', // ToDo: Use TWTXT-User
+            // CURLOPT_USERAGENT => 'TwtxtReader/0.0.1 (+https://uplegger.eu/twtxt.txt; @arne)', // TODO: Use TWTXT-User
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_AUTOREFERER => true,
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_URL => $url,
             CURLOPT_FILETIME => true,
-            CURLOPT_ENCODING => '', // handle gzip response  
+            CURLOPT_ENCODING => '', // handle gzip response
             CURLOPT_HTTPHEADER => $curlHeader,
             CURLOPT_NOSIGNAL => 1,
             CURLOPT_TIMEOUT_MS => 7500,
@@ -178,7 +178,7 @@ class TwtxtCache
             CURLOPT_HEADER => 0,
             CURLOPT_VERBOSE => 0,
             CURLOPT_RETURNTRANSFER => true,
-            // CURLOPT_USERAGENT => 'TwtxtReader/0.0.1 (+https://uplegger.eu/twtxt.txt; @arne)', // ToDo: Use TWTXT-User
+            // CURLOPT_USERAGENT => 'TwtxtReader/0.0.1 (+https://uplegger.eu/twtxt.txt; @arne)', // TODO: Use TWTXT-User
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_AUTOREFERER => true,
@@ -246,7 +246,7 @@ class TwtxtCache
 
                 if ($this->CacheInstance->hasItem($urlHash)) { // if item for url in cache
                     $lastUpdateDateTime = $this->CacheInstance->getItem($urlHash)->getModificationDate(); // get modification DateTime object of cached item
-                    if ($modDateTimeDateTime > $lastUpdateDateTime) { // if response DateTime Object is younger 
+                    if ($modDateTimeDateTime > $lastUpdateDateTime) { // if response DateTime Object is younger
                         $this->setCache($urlHash, $content); // update item in cache
                     }
                 } else { // if no item in cache

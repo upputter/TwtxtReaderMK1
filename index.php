@@ -208,7 +208,7 @@ $twtxt = new Twtxt(
 
 $twtxt->getTwtxt();
 
-// ToDo: may redirect the action
+// TODO: may redirect the action
 if ($currentAction == 'update') {
 }
 
@@ -237,7 +237,7 @@ $twtxt->unique_entries($limitMaxEntries);
 
 $paginationPage = ($_GET['page']) ?? 1;
 
-// ToDo: may clean up some variables
+// TODO: may clean up some variables
 $page->assign('languageSelector', ['current' => $selectedLanguage, 'available' => $language->getAvailableLanguages()]);
 $page->assign('validUser', $validUser);
 $page->assign('filterHash', $filterHash);
