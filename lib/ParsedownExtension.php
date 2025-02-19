@@ -13,7 +13,7 @@ class TwtxtParsedown extends \Parsedown
     {
         // Add blockFigure to non-exclusive handlers for text starting with !
         $this->BlockTypes['!'][] = 'Spotlight';
-        $this->InlineTypes['!'][] = 'Spotlight';
+        $this->InlineTypes['!'] = ['Spotlight'];
     }
 
     protected function inlineSpotlight($Excerpt)
