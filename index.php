@@ -20,6 +20,7 @@ $config->site['scripts'] = [
     'Resources/Public/JavaScript/pico/modal.js',
     'external/htmx/dist/htmx.min.js',
     'Resources/Public/JavaScript/TinyMDE/tiny-mde.min.js',
+    'Resources/Public/JavaScript/spotlight/spotlight.bundle.js',
 ];
 
 // all kinds of settings

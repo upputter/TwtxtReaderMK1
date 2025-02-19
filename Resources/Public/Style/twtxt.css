@@ -183,6 +183,26 @@ dialog#modal-form footer button {
     margin-right: 0;
 }
 
+.spotlight {
+    cursor: pointer;
+}
+
+#spotlight {
+    color: var(--pico-color);
+    font-family: var(--pico-font-family);
+    font-size: var(--pico-font-size);
+    background: var(--pico-background-color);
+}
+
+#spotlight .spl-footer{
+    padding: var(--spacing);
+}
+#spotlight .spl-title {
+    font-size: var(--pico-font-size);
+    padding: var(--spacing);
+    margin: var(--spacing);
+}
+
 @media (min-width: 1280px) {
     .container {
         max-width: 75vw;

@@ -66,6 +66,7 @@ Die folgende Bibliotheken und Softwarepakete werden in dieser Anwendung genutzt:
 - [Pico - CSS Framework](https://picocss.com/)
 - [phpfastcache/phpfastcache - Caching](https://github.com/PHPSocialNetwork/phpfastcache)
 - [Simple & Lightweight PHP YAML Class](https://github.com/eriknyk/Yaml)
+- [spotlight - lightbox gallery](https://github.com/nextapps-de/spotlight)
 - [tiny-markdown-editor - JavaScript Markdown Editor](https://github.com/jefago/tiny-markdown-editor)
 - [typo3fluid/fluid - Templating Engine](https://github.com/TYPO3/Fluid)
 - [xantios/mimey - MIME Types](https://github.com/Xantios/mimey)
