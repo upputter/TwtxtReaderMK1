@@ -120,7 +120,7 @@ class TwtxtCache
         // $headerLastTimeModifiedSince = 'If-Modified-Since: ' . $headerLastUpdateDateTime->format('D, d M Y H:i:s') . ' GMT';
 
         $curlHeader = [
-            'User-Agent: TwtxtReader/0.0.1 (+https://uplegger.eu/twtxt.txt; @arne)',
+            'User-Agent: TwtxtReader/' . $this->config['version'] . ' (+' . $this->config['twturl'] . '; @' . $this->config['nick'] . ')',
             'If-Modified-Since: ' . $headerLastUpdateDateTime->format('D, d M Y H:i:s') . ' GMT',
         ];
 
@@ -128,7 +128,6 @@ class TwtxtCache
             CURLOPT_HEADER => 0,
             CURLOPT_VERBOSE => 0,
             CURLOPT_RETURNTRANSFER => true,
-            // CURLOPT_USERAGENT => 'TwtxtReader/0.0.1 (+https://uplegger.eu/twtxt.txt; @arne)', // TODO: Use TWTXT-User
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_AUTOREFERER => true,
@@ -178,12 +177,10 @@ class TwtxtCache
             CURLOPT_HEADER => 0,
             CURLOPT_VERBOSE => 0,
             CURLOPT_RETURNTRANSFER => true,
-            // CURLOPT_USERAGENT => 'TwtxtReader/0.0.1 (+https://uplegger.eu/twtxt.txt; @arne)', // TODO: Use TWTXT-User
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_AUTOREFERER => true,
             CURLOPT_MAXREDIRS => 10,
-            // CURLOPT_URL => $url,
             CURLOPT_FILETIME => true,
             CURLOPT_ENCODING => '', // handle gzip response
             CURLOPT_NOSIGNAL => 1,
@@ -195,7 +192,7 @@ class TwtxtCache
             $urlHash = hash('sha256', $url);
 
             $curlHeader = [
-                'User-Agent: TwtxtReader/0.0.1 (+https://uplegger.eu/twtxt.txt; @arne)', // set user agent with twtxt user info
+                'User-Agent: TwtxtReader/' . $this->config['version'] . ' (+' . $this->config['twturl'] . '; @' . $this->config['nick'] . ')', // set user agent with twtxt user info
                 'Connection: close',
             ];
 

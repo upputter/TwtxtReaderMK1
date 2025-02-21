@@ -13,6 +13,7 @@ class Config
         $configArray = parse_ini_file($configFile, true);
         // set twtxt configs
         $this->settings = ($configArray['settings']) ?? [];
+        $this->settings['version'] = file_get_contents('./private/VERSION');
 
         // set site configs
         $this->site = ($configArray['site']) ?? [];
