@@ -14,6 +14,7 @@ class Twtxt
     public $avatar = '';
     public $description = '';
     public $links = [];
+    public $publicKey = '';
 
     public $timelineLimit = '-2 months'; // limit timeline by date
     public $timelineLimitDateTime;
@@ -85,6 +86,9 @@ class Twtxt
                                 ];
                                 $this->links[] = $link;
                                 break;
+                            case 'public_key':
+                                $this->publicKey = $currentHeaderParameter[1];
+                                break;
                             case 'type':
                                 $this->type = 'list';
                                 break;
@@ -110,7 +114,8 @@ class Twtxt
                                         rawMessage: $message,
                                         nick: $this->nick,
                                         url: rtrim($url, '/'),
-                                        avatarUrl: $this->avatar
+                                        avatarUrl: $this->avatar,
+                                        publicKey: $this->publicKey,
                                     );
                                     if (in_array($newEntry->type, $this->entryTypeFilter)) {
                                         $this->entries[$newEntry->hash] = $newEntry;

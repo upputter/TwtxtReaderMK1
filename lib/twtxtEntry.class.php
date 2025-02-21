@@ -1,4 +1,5 @@
 <?php
+
 use Twtxt\TwtxtParsedown;
 
 class TwtxtEntry
@@ -25,6 +26,7 @@ class TwtxtEntry
         public string $rawMessage,
         public string $url,
         public string $avatarUrl = '',
+        public string $publicKey = '',
     ) {
         $this->hash = $this->calculateHash();
         // add Twtxt line breaks
@@ -43,8 +45,9 @@ class TwtxtEntry
 
         // build conversation
         $this->conversation[] = $this->hash;
-        if ($this->replyTo)
+        if ($this->replyTo) {
             $this->conversation[] = $this->replyTo;
+        }
     }
 
     // get-function for Fluid
@@ -84,10 +87,16 @@ class TwtxtEntry
                 'HtmlEntities',
                 'MaskHashtags',
                 'TwtxtMention',
+                'TwtxtDirectMessage'
             ];
 
             foreach ($parsers as $parser) {
-                $string = call_user_func('Twtxt\\Parsers\\' . $parser . '::parse', $string); // execute parse-function for each twtxt-parser
+                $parameters = [$string];
+                if ($parser == 'TwtxtDirectMessage') {
+                    $parameters[] = $this->publicKey;
+                }
+                // $string = call_user_func('Twtxt\\Parsers\\' . $parser . '::parse', $string); // execute parse-function for each twtxt-parser
+                $string = call_user_func_array('Twtxt\\Parsers\\' . $parser . '::parse', $parameters); // execute parse-function for each twtxt-parser
             }
 
             $this->parsedMessageString = $string; // store the fully parsed message
@@ -121,8 +130,9 @@ class TwtxtEntry
     {
         $time = $this->dateTime->format('U');
         $time_difference = time() - $time;
-        if ($time_difference < 1)
+        if ($time_difference < 1) {
             $time_difference = 1;
+        }
 
         $condition = array(
             12 * 30 * 24 * 60 * 60 => 'year',
