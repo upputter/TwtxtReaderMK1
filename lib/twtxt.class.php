@@ -124,7 +124,7 @@ class Twtxt
                             }
                         } catch (Exception $e) {
                             if ($this->debug) {
-                                echo 'Error for URL: ' . $url . ' (Cache: ' . $this->getCacheFilename($url) . ') in line ' . $lineCounter . ': ' . $currentLine . '<br />';
+                                // echo 'Error for URL: ' . $url . ' (Cache: ' . $this->getCacheFilename($url) . ') in line ' . $lineCounter . ': ' . $currentLine . '<br />';
                             }
                         }
                     } catch (Exception $e) {

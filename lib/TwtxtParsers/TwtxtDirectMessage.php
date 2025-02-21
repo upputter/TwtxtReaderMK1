@@ -7,16 +7,22 @@ class TwtxtDirectMessage
 {
     public static function parse(string $rawMessage = '', $publicKey = '')
     {
-        global $config;
+        global $config, $validUser;
+        $encryptIcon = '🔓 ';
+
+        if (!$validUser) {
+            return $encryptIcon . $rawMessage;
+        }
+
         // w/o private key, no encryption is possible
         if (empty($config->settings['dmPrivKey']) or empty($publicKey)) {
             return $rawMessage;
         }
 
-        $encryptIcon = '🔓 ';
+
         $pattern = '/(?!`\s)(?<!`)!<([^ ]+)\s([^>]+)>/'; // "(?!`\s)(?<!`)" - skips markdown code block (regex lookahead, lookbehind)
 
-        $replace = $encryptIcon. '[@$1]('.$_SERVER["SCRIPT_NAME"].'?action=own&url=$2)|'; // set url to posts of user
+        $replace = $encryptIcon . '[@$1]('.$_SERVER["SCRIPT_NAME"].'?action=own&url=$2)|'; // set url to posts of user
 
         if (preg_match($pattern, $rawMessage, $check)) {
             if (count($check) == 3) {
