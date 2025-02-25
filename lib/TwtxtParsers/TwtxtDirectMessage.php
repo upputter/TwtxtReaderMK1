@@ -11,7 +11,7 @@ class TwtxtDirectMessage
         $encryptIcon = '🔓 ';
 
         if (!$validUser) {
-            return $encryptIcon . $rawMessage;
+            return $rawMessage;
         }
 
         // w/o private key, no encryption is possible
