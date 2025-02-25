@@ -49,11 +49,11 @@ const openModal = (modal, contentTarget, content, headerTarget, headerContent) =
   if (content && contentTarget) contentTarget.value = content;
   if (headerContent && headerTarget) headerTarget.textContent = headerContent;  
   modal.showModal();
-  if (mdEditor) {
+  try {
     // reset the editor content    
     mdEditor.setContent('');
-    mdEditor.paste(content);
-  };  
+    mdEditor.paste(content);   
+  } catch (e) {}
 };
 
 // Close modal
@@ -64,11 +64,12 @@ const closeModal = (modal) => {
   setTimeout(() => {
     html.classList.remove(closingClass, isOpenClass);
     html.style.removeProperty(scrollbarWidthCssVar);
+    try {
     // hide emoji picker
     document.getElementById('emojiTrigger').click();
     document.getElementById('lc-emoji-picker').classList.remove('lcep-shown');
     document.getElementById('emojiCMDButton').parentElement.style="";
-    
+    } catch (e) {}
     modal.close();
   }, animationDuration);
 };
